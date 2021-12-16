@@ -88,8 +88,8 @@ $.ajax({
       // And add them as properties to the dictionary lookup
       // This will allow for fast lookups later
       for ( var i = 0; i < words.length; i++ ) {
-          dict[ words[i] ] = true;
-          console.log(words[i]);
+          dict[ words[i].toUpperCase() ] = true;
+          console.log(words[i].toUpperCase());
       }
   }
 });
@@ -315,15 +315,15 @@ function submit_word() {
   }
 
   // lower case the word so it can be found in the dictionary
-  word = word.toLowerCase();
 
-  if ( dict[ word ] ) {
+  if ( word.length > 0 && dict[ word ] ) {
     $("#messages").html("<br><div> \
     Nice job! \"" + word + "\" is in the game dictionary!<br></div>");
     console.log("Success! Your word was in the dictionary!");
     return 1;
   }
   else {
+    console.log(word);
     $("#messages").html("<br><div> \
     Sorry. \"" + word + "\" is not a word in the game dictionary.</div>");
     console.log("Sorry your word was not found in the game dictionary :(");
