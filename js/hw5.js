@@ -89,6 +89,7 @@ $.ajax({
       // This will allow for fast lookups later
       for ( var i = 0; i < words.length; i++ ) {
           dict[ words[i] ] = true;
+          console.log(words[i]);
       }
   }
 });
