@@ -2,12 +2,12 @@
 <!DOCTYPE html>
 <!--
 File: index.html
-GUI Assignment: Using the jQuery Plugin/UI with Your Dynamic Table
-- This assignment uses HTML, CSS, JQuery and JavaScript to create a Multiplication
-table based off of solely user input via a form, done so completely dynamically,
-and saves said tables into jQuery tabs, which can be selected and deleted respectively.
+GUI Assignment: Implementing a Bit of Scrabble with Drag-and-Drop
+- This assignment uses HTML, CSS, and JavaScript to create a simplified,
+one-lined version of Scrabble including implementation of dragging
+and dropping tiles via mouse click and drag by user
 - This file provides the HTML structure of the product and actively displays
-the user form, and the proceeding table when it is correctly filled out
+the three buttons for submitting a word, resetting the board or restarting the game
 Jacob Leboeuf, UMass Lowell Computer Science, jacob_leboeuf@student.uml.edu,
 Copyright (c) 2021 by Jacob. All rights reserved. May be freely copied or
 excerpted for educational purposes with credit to the author.
@@ -17,44 +17,44 @@ updated by JL on November 15, 2021 at 2:01 PM
 <head>
    <link rel="stylesheet" href="css/style.css" type="text/css"/>
 
-   <title>Scrabble</title>
+   <title>Assignment 5</title>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-   <!-- jQuery from CDN -->
    <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-   <!-- jQuery UI from CDN -->
    <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
    <script type='text/javascript' src="js/hw5.js"></script>
 
 </head>
 <body>
-   <!--
-     Scrabble single line board courtesy of Jason Downing
-     https://d1b10bmlvqabco.cloudfront.net/attach/icm9jynacvn5kx/i5ic1b2hwmz6nv/ihf34c9jbxpw/Scrabble_Board_OneLine.png
-   -->
-   <img class="resize_board" id="the_board" src="https://d1b10bmlvqabco.cloudfront.net/attach/icm9jynacvn5kx/i5ic1b2hwmz6nv/ihf34c9jbxpw/Scrabble_Board_OneLine.png" alt="board not available">
-   <div class="center_div" id="board"></div>
+    <img class="gameBoard" id="BoardPic" src="images/Scrabble_Board_OneLine.png">
+    <div class="center" id="board"></div>
+    <div class="center">
+        <div class="scores">Word: <span class="scoreboard" id="word"> </span> </div>
+        <div class="scores">Score: <span class="scoreboard" id="score">0</span> </div>
+        <div class="scores">High Score: <span class="scoreboard" id="highscore">0</span> </div>
+    </div>
+    <div class="center">
+        <button onclick="validateWord();">Submit Word</button>
+        <button onclick="boardClear();">Reset Board</button>
+        <button onclick="restartGame();">Restart Game</button>
+        <br>
+        <br>
+        <div class="warnings" id="messages"></div>
+    </div>
+    <br>
+    <br>
+    <img class="gameRack" id="RackPic" src="images/scrabble-tile-holder-406774_640.png">
+    <div id="rack"></div>
 
-   <div class="center_div">
-       <div class="div_style">Word: <span class="scoreboard" id="word">____</span> </div>
-       <div class="div_style">Score: <span class="scoreboard" id="score">0</span> </div>
-   </div>
-   <div class="message_div" id="messages"></div>
-   <div class="center_div">
-       <button onclick="submit_word();">Submit Word</button>
-       <button onclick="reset_board();">Reset Board</button>
-   </div>
-   <br><br>
+    <script>
+        // Creates Scrabble Board for first time and resets the board
+        $( document ).ready(function() {
+            makeTiles();
+            makeDroppable();
+            boardClear();
+        });
+    </script>
 
-   <img class="resize_rack" id="the_rack" src="images/scrabble-tile-holder-406774_640.png" alt="tile rack not available">
-   <div class="center_div" id="rack"></div>
-
-   <script>
-       $( document ).ready(function() {
-           load_scrabble_pieces();     // Load up the 7 random Scrabble pieces.
-           load_droppable_targets();   // Load up the 15 targets for the Scrabble pieces.
-       });
-   </script>
 </body>
 </html>
