@@ -80,7 +80,7 @@ var dict = {};
 
 // Do a jQuery Ajax request for the text dictionary
 $.ajax({
-  url: "dict/dictionary.txt",
+  url: "dictionary.txt",
   success: function( txt ) {
       // Get an array of all the words
       var words = txt.split( "\n" );
