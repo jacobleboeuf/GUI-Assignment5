@@ -1,0 +1,83 @@
+/**
+ * File: style.css
+ * GUI Assignment: Using the jQuery Plugin/UI with Your Dynamic Table
+ *
+ * - This assignment uses HTML, CSS, JQuery and JavaScript to create a Multiplication
+     table based off of solely user input via a form, done so completely dynamically,
+ *   and saves said tables into jQuery tabs, which can be selected and deleted respectively.
+ *
+ *
+ * - This file styles the existing HTML to make the form and table easy to view
+ *   and stylistically pleasing, as well as easy to understand
+ *
+ * Jacob Leboeuf, UMass Lowell Computer Science, jacob_leboeuf@student.uml.edu,
+ * Copyright (c) 2021 by Jacob. All rights reserved. May be freely copied or
+ * excerpted for educational purposes with credit to the author.
+ * updated by JL on November 15, 2021 at 2:01 PM
+**/
+
+h1{
+  text-align: center;
+}
+
+
+board {
+  height: 125px;
+  width: auto;
+}
+rack {
+  height: 125px;
+  width: 1200px
+}
+button {
+  color: black;
+  font-family: "Advent Pro";
+  font-size: 150%;
+  font-weight: 900;
+  text-align: center;
+  height: 75px;
+  width: 200px;
+}
+
+.pieces {
+  padding-left: 50px;
+  height: 100px;
+  width: 100px;
+}
+.resize_board {
+  height: 125px;
+  width: auto;
+}
+.resize_rack {
+  height: 125px;
+  width: 1200px;
+}
+.logo {
+  margin: auto;
+  text-align: center;
+}
+.message_div {
+  color: red;
+  font-family: "Advent Pro";
+  font-size: 200%;
+  font-weight: 900;
+  text-align: center;
+}
+.scoreboard {
+  color: black;
+  font-family: "Advent Pro";
+  font-size: 200%;
+  font-weight: 900;
+  text-align: center;
+}
+.div_style {
+  color: red;
+  font-family: "Advent Pro";
+  font-size: 200%;
+  font-weight: 900;
+  text-align: center;
+}
+.droppable {
+  height: 125px;
+  width: 118px;
+}
