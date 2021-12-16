@@ -1,85 +1,85 @@
 /**
- * File: hw4.js
- * GUI Assignment: Using the jQuery Plugin/UI with Your Dynamic Table
+ * File: hw5.js
+ * GUI Assignment: Implementing a Bit of Scrabble with Drag-and-Drop
  *
- * - This assignment uses HTML, CSS, and JavaScript to create a Multiplication
- *   table based off of solely user input via a form, done so completely dynamically,
- *   and saves said tables into jQuery tabs, which can be selected and deleted respectively.
+ * - This assignment uses HTML, CSS, and JavaScript to create a simplified,
+ *   one-lined version of Scrabble including implementation of dragging
+ *   and dropping tiles via mouse click and drag by user
  *
- * - This file contains the JavaScript for the entire project, taking the
- *   inputted values by the user to create and display a Multiplication Table
- *   based on those values, or providing JQuery
+ * - This file contains the JavaScript for the entire project, generating the
+ *   board, tiles, updating the score based off of correct user word creation,
+ *   and error messages based off of incorrect user word creation
  *
  * Jacob Leboeuf, UMass Lowell Computer Science, jacob_leboeuf@student.uml.edu,
  * Copyright (c) 2021 by Jacob. All rights reserved. May be freely copied or
  * excerpted for educational purposes with credit to the author.
- * updated by JL on November 15, 2021 at 2:01 PM
+ * updated by JL on December 16, 2021 at 5:01 AM
 **/
+
+// GLOBAL VARIABLES
+var board = [
+    {"id": "drop0",  "tile": "pieceX"},
+    {"id": "drop1",  "tile": "pieceX"},
+    {"id": "drop2",  "tile": "pieceX"},
+    {"id": "drop3",  "tile": "pieceX"},
+    {"id": "drop4",  "tile": "pieceX"},
+    {"id": "drop5",  "tile": "pieceX"},
+    {"id": "drop6",  "tile": "pieceX"},
+    {"id": "drop7",  "tile": "pieceX"},
+    {"id": "drop8",  "tile": "pieceX"},
+    {"id": "drop9",  "tile": "pieceX"},
+    {"id": "drop10", "tile": "pieceX"},
+    {"id": "drop11", "tile": "pieceX"},
+    {"id": "drop12", "tile": "pieceX"},
+    {"id": "drop13", "tile": "pieceX"},
+    {"id": "drop14", "tile": "pieceX"}
+];
+var tiles = [
+    {"id": "piece0", "letter": "A"},
+    {"id": "piece1", "letter": "B"},
+    {"id": "piece2", "letter": "C"},
+    {"id": "piece3", "letter": "D"},
+    {"id": "piece4", "letter": "E"},
+    {"id": "piece5", "letter": "F"},
+    {"id": "piece6", "letter": "G"}
+];
 var pieces = [
-  {"letter":"A", "value":1,  "amount":9},
-  {"letter":"B", "value":3,  "amount":2},
-  {"letter":"C", "value":3,  "amount":2},
-  {"letter":"D", "value":2,  "amount":4},
-  {"letter":"E", "value":1,  "amount":12},
-  {"letter":"F", "value":4,  "amount":2},
-  {"letter":"G", "value":2,  "amount":3},
-  {"letter":"H", "value":4,  "amount":2},
-  {"letter":"I", "value":1,  "amount":9},
-  {"letter":"J", "value":8,  "amount":1},
-  {"letter":"K", "value":5,  "amount":1},
-  {"letter":"L", "value":1,  "amount":4},
-  {"letter":"M", "value":3,  "amount":2},
-  {"letter":"N", "value":1,  "amount":6},
-  {"letter":"O", "value":1,  "amount":8},
-  {"letter":"P", "value":3,  "amount":2},
-  {"letter":"Q", "value":10, "amount":1},
-  {"letter":"R", "value":1,  "amount":6},
-  {"letter":"S", "value":1,  "amount":4},
-  {"letter":"T", "value":1,  "amount":6},
-  {"letter":"U", "value":1,  "amount":4},
-  {"letter":"V", "value":4,  "amount":2},
-  {"letter":"W", "value":4,  "amount":2},
-  {"letter":"X", "value":8,  "amount":1},
-  {"letter":"Y", "value":4,  "amount":2},
-  {"letter":"Z", "value":10, "amount":1},
-  {"letter":"Blank", "value":0,  "amount":2}
+    {"letter":"A", "value":1,  "amount":9},
+    {"letter":"B", "value":3,  "amount":2},
+    {"letter":"C", "value":3,  "amount":2},
+    {"letter":"D", "value":2,  "amount":4},
+    {"letter":"E", "value":1,  "amount":12},
+    {"letter":"F", "value":4,  "amount":2},
+    {"letter":"G", "value":2,  "amount":3},
+    {"letter":"H", "value":4,  "amount":2},
+    {"letter":"I", "value":1,  "amount":9},
+    {"letter":"J", "value":8,  "amount":1},
+    {"letter":"K", "value":5,  "amount":1},
+    {"letter":"L", "value":1,  "amount":4},
+    {"letter":"M", "value":3,  "amount":2},
+    {"letter":"N", "value":1,  "amount":6},
+    {"letter":"O", "value":1,  "amount":8},
+    {"letter":"P", "value":3,  "amount":2},
+    {"letter":"Q", "value":10, "amount":1},
+    {"letter":"R", "value":1,  "amount":6},
+    {"letter":"S", "value":1,  "amount":4},
+    {"letter":"T", "value":1,  "amount":6},
+    {"letter":"U", "value":1,  "amount":4},
+    {"letter":"V", "value":4,  "amount":2},
+    {"letter":"W", "value":4,  "amount":2},
+    {"letter":"X", "value":8,  "amount":1},
+    {"letter":"Y", "value":4,  "amount":2},
+    {"letter":"Z", "value":10, "amount":1},
+    {"letter":"_", "value":0,  "amount":2}
 ];
+var totalScore = 0;
+var highScore = 0;
+var currentScore = 0;
 
-//
-var game_tiles = [
-  {"id": "piece0", "letter": "A"},
-  {"id": "piece1", "letter": "B"},
-  {"id": "piece2", "letter": "C"},
-  {"id": "piece3", "letter": "D"},
-  {"id": "piece4", "letter": "E"},
-  {"id": "piece5", "letter": "F"},
-  {"id": "piece6", "letter": "G"}
-];
-
-var game_board = [
-  {"id": "drop0",  "tile": "pieceX"},
-  {"id": "drop1",  "tile": "pieceX"},
-  {"id": "drop2",  "tile": "pieceX"},
-  {"id": "drop3",  "tile": "pieceX"},
-  {"id": "drop4",  "tile": "pieceX"},
-  {"id": "drop5",  "tile": "pieceX"},
-  {"id": "drop6",  "tile": "pieceX"},
-  {"id": "drop7",  "tile": "pieceX"},
-  {"id": "drop8",  "tile": "pieceX"},
-  {"id": "drop9",  "tile": "pieceX"},
-  {"id": "drop10", "tile": "pieceX"},
-  {"id": "drop11", "tile": "pieceX"},
-  {"id": "drop12", "tile": "pieceX"},
-  {"id": "drop13", "tile": "pieceX"},
-  {"id": "drop14", "tile": "pieceX"}
-];
-
-// dictionary related code used from Jason Downing's post on Piazza
-// https://piazza.com/class/icm9jynacvn5kx?cid=43
 var dict = {};
 
 // Do a jQuery Ajax request for the text dictionary
-$.ajax({
+/*$.ajax({
   url: "dictionary.txt",
   success: function( txt ) {
       // Get an array of all the words
@@ -93,270 +93,232 @@ $.ajax({
       }
   }
 });
+*/
 
-
-
-function find_word() {
-  var word = "";
-  var score = 0;
-
-  // Iterate through the board and generate a possible word.
-  for(var i = 0; i < 15; i++) {
-    console.log(game_board[i].tile);
-    if(game_board[i].tile != "pieceX") {
-      word += find_letter(game_board[i].tile);
-      score += find_score(game_board[i].tile);
-    }
-  }
-
-  // Factor in the doubling of certain tiles. Since the should_double() function returns 0 or 1,
-  // this is easy to account for. If it's 0, 0 is added to the score. If it's 1, the score is doubled.
-  score += (score * should_double());
-
-  $("#score").html(score);
-
-  if(word !== "") {
-    $("#word").html(word);
-    return;
-  }
-
-  $("#word").html("____");
-}
-
-//determines score doubling
-function should_double() {
-  if(game_board[2].tile !== "pieceX") {
-    return 1;
-  }
-  if(game_board[12].tile !== "pieceX") {
-    return 1;
-  }
-  return 0;
-}
-
-function find_score(given_id) {
-  var letter = find_letter(given_id);
-  var score = 0;
-
-  // find the letter JSON object in the array
-  for(var i = 0; i < 27; i++) {
-    // Get an object to look at.
-    var obj = pieces[i];
-
-    // check if object is correct
-    if(obj.letter === letter) {
-      score = obj.value;
-
-      // check if scores should be doubled
-      score += (score * should_double_letter(given_id));
-
-      return score;
-    }
-  }
-  return -1;
-}
-
-function should_double_letter(given_id) {
-  var dropID = find_tile_pos(given_id);
-
-  // check if drop zone is a double score zone
-  if(dropID === "drop6" || dropID === "drop8") {
-    // yes
-    return 1;
-  }
-  // no
-  return 0;
-}
-
-function find_letter(given_id) {
-  // iterate the 7 tiles
-  for(var i = 0; i < 7; i++) {
-    if(game_tiles[i].id === given_id) {
-      // found letter
-      return game_tiles[i].letter;
-    }
-  }
-  // letter was not found
-  return -1;
-}
-
-function find_board_pos(given_id) {
-  for(var i = 0; i < 15; i++){
-    if(game_board[i].id === given_id) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-function find_tile_pos(given_id) {
-  for(var i = 0; i < 15; i++){
-    if(game_board[i].tile === given_id) {
-      return game_board[i].id;
-    }
-  }
-  return -1;
-}
-
-function load_scrabble_pieces() {
-  console.log("load pieces entered");
-  var base_url = "images/Scrabble_Tile_";   // base URL of the image
-  var random_num = 1;
-  var piece = "<img class='pieces' id='piece" + i + "' src='" + base_url + random_num + ".jpg" + "'></img>";
-  var piece_ID = "";
-  var what_piece = "";
-
-  // Load up 7 pieces
-  for(var i = 0; i < 7; i++) {
-    // Generate random tile but also check for overuse of a certain tile
-    var loop = true;
-    while(loop === true){
-      random_num = getRandomInt(0, 26);
-
-      // Remove words from the pieces data structure.
-      if(pieces[random_num].amount !== 0) {
-        loop = false;
-        pieces[random_num].amount--;
-      }
-    }
-
-    piece = "<img class='pieces' id='piece" + i + "' src='" + base_url + pieces[random_num].letter + ".jpg" + "'></img>";
-    //console.log(piece);
-    piece_ID = "#piece" + i;
-    game_tiles[i].letter = pieces[random_num].letter;
-
-    // Reposition the tile on top of the rack
-    // Get rack location
-    var pos = $("#the_rack").position();
-
-    // Now figure out where to reposition the board piece.
-    var img_left = -165 + (50 * i);
-    var img_top = -130;
-
-    // Add the piece to the screen
-    $("#rack").append(piece);
-
-    // Move the piece relative to where the rack is located on the screen.
-    $(piece_ID).css("left", img_left).css("top", img_top).css("position", "relative");
-
-    // Make the piece draggable.
-    $(piece_ID).draggable();
-  }
-}
-
-function load_droppable_targets() {
-  var img_url = "images/drop.png";   // URL of the image
-  var drop = "<img class='droppable' id='drop" + i + "' src='" + img_url + "'></img>";
-  var drop_ID = "#drop" + i;
-
-  for(var i = 0; i < 15; i++) {
-    drop = "<img class='droppable' id='drop" + i + "' src='" + img_url + "'></img>";
-    drop_ID = "#drop" + i;
-
-    // Get board location.
-    var pos = $("#the_board").position();
-
-    var img_left = 0;
-    var img_top = -125;
-
-    // Add the img to the screen.
-    $("#board").append(drop);
-
-    // Reposition the img relative to the board.
-    $(drop_ID).css("left", img_left).css("top", img_top).css("position", "relative");
-
-    // Make the img droppable
-    $(drop_ID).droppable({
-      drop: function(event, ui) {
-        // This is code from this URL
-        // https://stackoverflow.com/questions/5562853/jquery-ui-get-id-of-droppable-element-when-dropped-an-item
-        var draggableID = ui.draggable.attr("id");
-        var droppableID = $(this).attr("id");
-
-        // Tile was dropped
-        game_board[find_board_pos(droppableID)].tile = draggableID;
-
-        // Find out is a word is entered
-        find_word();
-      },
-      // When a tile is moved away, remove it from the board
-      out: function(event, ui) {
-        var draggableID = ui.draggable.attr("id");
-        var droppableID = $(this).attr("id");
-
-        // Check for accidental tile movement
-        if(draggableID !== game_board[find_board_pos(droppableID)].tile) {
-
-          return;
+// Function creates word based off of tiles placed and generates score based off of letter amounts
+// Updates potential score as well as notifies user if word is too small for validation
+function makeWord() {
+    var word = "";
+    var score = 0;
+    for (var i = 0; i < 15; i++) {
+        if(board[i].tile != "pieceX") {
+          word += getLetter(board[i].tile);
+          score += makeScore(board[i].tile);
         }
-
-        // Mark that a tile was removed in the game_board
-        game_board[find_board_pos(droppableID)].tile = "pieceX";
-
-        // Update the word
-        find_word();
-      }
-    });
-  }
-}
-// I used Jason Downing's post on the Piazza for this function.  Here is the post:
-// https://piazza.com/class/icm9jynacvn5kx?cid=43
-function submit_word() {
-  find_word(); // update word
-
-  var word = $("#word").html();
-
-  // will not run if player has not placed a tile
-  if (word === "____") {
-    $("#messages").html("<br><div> \
-    Sorry, but you need to play a tile before I can check the word for you!</div>");
-    console.log("Sorry you need to play a tile");
-    return -1;
-  }
-
-  // lower case the word so it can be found in the dictionary
-
-  if ( word.length > 0 && dict[ word ] ) {
-    $("#messages").html("<br><div> \
-    Nice job! \"" + word + "\" is in the game dictionary!<br></div>");
-    console.log("Success! Your word was in the dictionary!");
-    return 1;
-  }
-  else {
-    console.log(word);
-    $("#messages").html("<br><div> \
-    Sorry. \"" + word + "\" is not a word in the game dictionary.</div>");
-    console.log("Sorry your word was not found in the game dictionary :(");
-    return -1;
-  }
-}
-
-function reset_board() {
-
-    // First clear the game board array.
-    game_board = [];
-
-    // Remove all the scrabble tiles in the rack.
-    for(var i = 0; i < 7; i++) {
-      var tileID = '#' + game_tiles[i].id;
-      $(tileID).draggable("destroy");    // Destroys the draggable element.
-      $(tileID).remove();                // Removes the tile from the page.
     }
-
-    // loads new pieces
-    load_scrabble_pieces();
-
-    find_word(); // Wipes word/score display
-    find_score();
-
-    $("#messages").html("<br><div> \
-    BOARD AND TILES RESET.</div>");
-
-    return;
+    score += (score * checkWordDouble());
+    currentScore = score;
+    if (currentScore > 0) {
+        $("#score").html(totalScore + " + " + currentScore);
+    }
+    if(word !== "") {
+        $("#word").html(word);
+    if (word.length < 2) {
+        $("#messages").html("Not enough tiles for a word!");
+    } else {
+        $("#messages").html("Ready to submit!");
+    }
+  }
 }
 
-// Returns a random integer between min (inclusive) and max (inclusive)
-// URL: https://stackoverflow.com/questions/1527803/generating-random-numbers-in-javascript-in-a-specific-range
+// Determines whether tile is placed on Double Word space or not
+// Helper function used in makeWord();
+function checkWordDouble() {
+    if(board[2].tile !== "pieceX") {
+        return 1;
+    }
+    if(board[12].tile !== "pieceX") {
+        return 1;
+    }
+    return 0;
+}
+
+// Determines the potential score of the created word
+// Helper function in makeWord();
+function makeScore(id) {
+    var letter = getLetter(id);
+    var score = 0;
+    for (var i = 0; i < 27; i++) {
+        var x = pieces[i];
+        if (x.letter === letter) {
+            score = x.value;
+            // Doubles score if necessary
+            score += (score * checkLetterDouble(id));
+            return score;
+        }
+    }
+    return -1;
+}
+
+// Determines whether tile is placed on Double Letter space or not
+// Helper function used in makeScore();
+function checkLetterDouble(id) {
+    var dropID = getTilePosition(id);
+    if (dropID === "drop6" || dropID === "drop8") {
+        return 1;
+    }
+    return 0;
+}
+
+// Retrieves the position of the tile given the id provided
+// Helper function used in checkLetterDouble();
+function getTilePosition(id) {
+    for (var i = 0; i < 15; i++){
+        if (board[i].tile === id) {
+            return board[i].id;
+        }
+    }
+    return -1;
+}
+
+// Gets the letter value of the id provided
+// Helper function used in makeWord(); and makeScore();
+function getLetter(id) {
+    for (var i = 0; i < 7; i++) {
+        if (tiles[i].id === id) {
+            return tiles[i].letter;
+        }
+    }
+    return -1;
+}
+
+// Function creates new tiles while removing the ones it created from the data structure
+// Helper function in boardClear();
+function makeTiles() {
+    var url = "images/Scrabble_Tile_";   // base URL of the image
+    var randNum = 0;
+    var piece = "";
+    var pieceID = "";
+    for (var i = 0; i < 7; i++) {
+        var loop = true;
+        while (loop === true){
+            randNum = getRandomInt(0, 26);
+            if (pieces[randNum].amount !== 0) {
+                loop = false;
+                pieces[randNum].amount--;
+            }
+        }
+        piece = "<img class='pieces' id='piece" + i + "' src='" + url + pieces[randNum].letter + ".jpg" + "'></img>";
+        pieceID = "#piece" + i;
+        tiles[i].letter = pieces[randNum].letter;
+        var pos = $("rackPic").position();
+        var left = -165 + (50 * i);
+        var top = -130;
+        $("#rack").append(piece);
+        $(pieceID).css("left", left).css("top", top).css("position", "relative");
+        $(pieceID).draggable();
+    }
+}
+
+// Helper function in makeTiles(); to generate a random number
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Makes pieces able to be dragged and dropped on board
+// Executed as soon as page loads
+function makeDroppable() {
+    var url = "images/droppable.png";
+    var drop = "<img class='droppable' id='drop" + i + "' src='" + url + "'></img>";
+    var dropID = "#drop" + i;
+    for (var i = 0; i < 15; i++) {
+        drop = "<img class='droppable' id='drop" + i + "' src='" + url + "'></img>";
+        dropID = "#drop" + i;
+        var pos = $("#boardPic").position();
+        var left = 0;
+        var top = -125;
+        $("#board").append(drop);
+        $(dropID).css("left", left).css("top", top).css("position", "relative");
+        $(dropID).droppable({
+        // Heavy inspiration from
+        // https://stackoverflow.com/questions/5562853/jquery-ui-get-id-of-droppable-element-when-dropped-an-item
+            drop: function(event, ui) {
+                var dragID = ui.draggable.attr("id");
+                var droppableID = $(this).attr("id");
+                board[getBoardPosition(droppableID)].tile = dragID;
+                makeWord();
+            },
+            out: function(event, ui) {
+                var dragID = ui.draggable.attr("id");
+                var droppableID = $(this).attr("id");
+                if (dragID !== board[getBoardPosition(droppableID)].tile) {
+                    return;
+                }
+                board[getBoardPosition(droppableID)].tile = "pieceX";
+                makeWord();
+            }
+        });
+    }
+}
+
+// Retrieves the position of the id provided on the board
+// Helper function used in makeDroppable();
+function getBoardPosition(id) {
+    for (var i = 0; i < 15; i++){
+        if (board[i].id === id) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// Destroys draggable quality of board pieces
+// Then recreates board
+// Called in validateWord(); and restartGame();
+function boardClear() {
+    for (var i = 0; i < 7; i++) {
+        var id = '#' + tiles[i].id;
+        $(id).draggable("destroy");
+        $(id).remove();
+    }
+    board = [
+        {"id": "drop0",  "tile": "pieceX"},
+        {"id": "drop1",  "tile": "pieceX"},
+        {"id": "drop2",  "tile": "pieceX"},
+        {"id": "drop3",  "tile": "pieceX"},
+        {"id": "drop4",  "tile": "pieceX"},
+        {"id": "drop5",  "tile": "pieceX"},
+        {"id": "drop6",  "tile": "pieceX"},
+        {"id": "drop7",  "tile": "pieceX"},
+        {"id": "drop8",  "tile": "pieceX"},
+        {"id": "drop9",  "tile": "pieceX"},
+        {"id": "drop10", "tile": "pieceX"},
+        {"id": "drop11", "tile": "pieceX"},
+        {"id": "drop12", "tile": "pieceX"},
+        {"id": "drop13", "tile": "pieceX"},
+        {"id": "drop14", "tile": "pieceX"}
+    ];
+    makeTiles();
+    makeWord();
+    $("#word").html("");
+    $("#messages").html("Make a word with the tiles!");
+}
+
+// Clears the board and overall score attempt
+// Excecuted with "Restart Game" button press
+function restartGame() {
+     boardClear();
+     totalScore = 0;
+     $("#score").html(totalScore);
+     $("#messages").html("Board, tiles, and score cleared!");
+}
+
+// Checks if word consists of 2+ letters and updates score and board if so
+// Was originally going to check dictionary but due to complications
+// such extra credit attempt was scrapped
+// Executed with "Submit Word" button click
+function validateWord() {
+    makeWord();
+    var word = $("#word").html();
+    if (word.length >= 2) { // only update score if word is 2+ letters
+        totalScore += currentScore;
+        if (totalScore > highScore) {
+            highScore = totalScore;
+            $("#highscore").html(highScore);
+        }
+    }
+    $("#score").html(totalScore);
+    if (word.length > 1) {
+        boardClear();
+    }
 }
